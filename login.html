@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - National Digital Library</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(120deg, #004d40, #26a69a);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 30px;
+      color: #004d40;
+      text-align: center;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      background-color: #004d40;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #00796b;
+    }
+
+    .extra-links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .extra-links a {
+      color: #004d40;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Library Login</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required />
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required />
+      </div>
+      <button type="submit" class="btn">Log In</button>
+    </form>
+    <div class="extra-links">
+      <p>Don't have an account? <a href="#">Register Here</a></p>
+      <p><a href="#">Forgot Password?</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Multiple users allowed
+      const users = [
+        { email: "kunal@ndl.com", password: "kunal123", role: "admin" },
+        { email: "user1@ndl.com", password: "user1pass", role: "user" },
+        { email: "user2@ndl.com", password: "user2pass", role: "user" }
+      ];
+
+      const matchedUser = users.find(
+        user => user.email === email && user.password === password
+      );
+
+      if (matchedUser) {
+        localStorage.setItem("user", JSON.stringify(matchedUser));
+        alert("Login Successful as " + matchedUser.role);
+        if (matchedUser.role === "admin") {
+          window.location.href = "admin-dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    });
+  </script><script>
+  function logout() {
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (user) {
+      // Hide Login, Show Logout
+      document.getElementById('loginLink').style.display = 'none';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
+    } else {
+      // Show Login, Hide Logout
+      document.getElementById('loginLink').style.display = 'inline-block';
+      document.getElementById('logoutBtn').style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
